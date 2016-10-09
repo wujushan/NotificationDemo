@@ -26,16 +26,15 @@ public class NotificationUtils {
     NotificationManager manager;
     NotificationCompat.Builder builder;
 
-    int notificationId=-1;
-
+    int notificationId = -1;
     Context context;
 
     public NotificationUtils(Context context, int notificationId) {
-        this.context=context;
-        this.notificationId=notificationId;
+        this.context = context;
+        this.notificationId = notificationId;
 
-        manager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        builder=new NotificationCompat.Builder(context);
+        manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        builder = new NotificationCompat.Builder(context);
     }
 
     public void sample(String ticker, String title, String content, int smallIcon, PendingIntent intent, boolean sound, boolean vibrate, boolean lights) {
@@ -52,14 +51,14 @@ public class NotificationUtils {
         //小图标
         builder.setSmallIcon(smallIcon);
         //大图标(这边同时设置了小图标跟大图标，在5.0及以上版本通知栏里面的样式会有所不同)
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), smallIcon));
         //设置该条通知时间
         builder.setWhen(System.currentTimeMillis());
-        //设置为true，点击该条通知会自动删除，false时只能通过滑动来删除
+        //设置为true，点击该条通知会自动删除，
         builder.setAutoCancel(true);
         //设置优先级，级别高的排在前面
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
-        int defaults=0;
+        int defaults = 0;
         if (sound) {
             defaults |= Notification.DEFAULT_SOUND;
         }
@@ -77,6 +76,7 @@ public class NotificationUtils {
 
     /**
      * 单行文本使用
+     *
      * @param ticker
      * @param title
      * @param content
@@ -87,13 +87,14 @@ public class NotificationUtils {
      * @param lights
      */
     public void sendSingleLineNotification(String ticker, String title, String content, int smallIcon, PendingIntent intent, boolean sound, boolean vibrate, boolean lights) {
-        sample(ticker, title ,content, smallIcon, intent, sound, vibrate, lights);
-        Notification notification=builder.build();
+        sample(ticker, title, content, smallIcon, intent, sound, vibrate, lights);
+        Notification notification = builder.build();
         send(notification);
     }
 
     /**
      * 多行文本使用
+     *
      * @param ticker
      * @param title
      * @param content
@@ -109,12 +110,13 @@ public class NotificationUtils {
             return;
         }
         sample(ticker, title, content, smallIcon, intent, sound, vibrate, lights);
-        Notification notification=new NotificationCompat.BigTextStyle(builder).bigText(content).build();
+        Notification notification = new NotificationCompat.BigTextStyle(builder).bigText(content).build();
         send(notification);
     }
 
     /**
      * 大图模式
+     *
      * @param ticker
      * @param title
      * @param content
@@ -131,15 +133,16 @@ public class NotificationUtils {
         }
         sample(ticker, title, content, smallIcon, intent, sound, vibrate, lights);
         //大图
-        Bitmap bigPicture=BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        Bitmap bigPicture = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
         //图标
-        Bitmap bigLargeIcon=BitmapFactory.decodeResource(context.getResources(), R.mipmap.android_bigicon);
-        Notification notification=new NotificationCompat.BigPictureStyle(builder).bigLargeIcon(bigLargeIcon).bigPicture(bigPicture).build();
+        Bitmap bigLargeIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.android_bigicon);
+        Notification notification = new NotificationCompat.BigPictureStyle(builder).bigLargeIcon(bigLargeIcon).bigPicture(bigPicture).build();
         send(notification);
     }
 
     /**
      * 自定义通知视图
+     *
      * @param ticker
      * @param title
      * @param content
@@ -151,17 +154,23 @@ public class NotificationUtils {
      * @param vibrate
      * @param lights
      */
-    public void sendCustomerNotification(String ticker, String title, String content, int smallIcon, PendingIntent intent, RemoteViews contentView, RemoteViews bigContentView, boolean sound, boolean vibrate, boolean lights) {
+    public void sendCustomerNotification(String ticker, String title,
+                                         String content, int smallIcon,
+                                         PendingIntent intent, RemoteViews contentView,
+                                         RemoteViews bigContentView, boolean sound,
+                                         boolean vibrate, boolean lights) {
         sample(ticker, title, content, smallIcon, intent, sound, vibrate, lights);
-        Notification notification=builder.build();
+//        builder.setSmallIcon(smallIcon);
+        Notification notification = builder.build();
         //在api大于等于16的情况下，如果视图超过一定范围，可以转变成bigContentView
-        notification.bigContentView=bigContentView;
-        notification.contentView=contentView;
+        notification.bigContentView = bigContentView;
+        notification.contentView = contentView;
         send(notification);
     }
 
     /**
      * 列表型通知
+     *
      * @param ticker
      * @param title
      * @param content
@@ -178,18 +187,19 @@ public class NotificationUtils {
             return;
         }
         sample(ticker, title, content, smallIcon, intent, sound, vibrate, lights);
-        NotificationCompat.InboxStyle style=new NotificationCompat.InboxStyle(builder);
+        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
         for (String conntent : conntents) {
             style.addLine(conntent);
         }
-        style.setSummaryText(conntents.size()+"条消息");
+        style.setSummaryText(conntents.size() + "条消息");
         style.setBigContentTitle(title);
-        Notification notification=style.build();
+        Notification notification = style.build();
         send(notification);
     }
 
     /**
      * 双折叠双按钮通知
+     *
      * @param ticker
      * @param title
      * @param content
@@ -205,19 +215,34 @@ public class NotificationUtils {
      * @param vibrate
      * @param lights
      */
-    public void sendActionNotification(String ticker, String title, String content, int smallIcon, PendingIntent intent,
+
+    public void sendActionNotification(String ticker, String title, String content,
+                                       int smallIcon, PendingIntent intent,
+                                       int leftIcon, String leftText, PendingIntent leftPI,
+                                       int rightIcon, String rightText, PendingIntent rightPI,
+                                       boolean sound, boolean vibrate, boolean lights) {
+//        sample(ticker, title, content, smallIcon, intent, sound, vibrate, lights);
+        builder.addAction(leftIcon, leftText, leftPI);
+        builder.addAction(rightIcon, rightText, rightPI);
+        Notification notification = builder.build();
+        send(notification);
+    }
+    public void sendActionNotification(RemoteViews contentView,String ticker, String title, String content,
+                                       int smallIcon, PendingIntent intent,
                                        int leftIcon, String leftText, PendingIntent leftPI,
                                        int rightIcon, String rightText, PendingIntent rightPI,
                                        boolean sound, boolean vibrate, boolean lights) {
         sample(ticker, title, content, smallIcon, intent, sound, vibrate, lights);
         builder.addAction(leftIcon, leftText, leftPI);
+        builder.addAction(leftIcon,leftText,leftPI);
         builder.addAction(rightIcon, rightText, rightPI);
-        Notification notification=builder.build();
+        Notification notification = builder.build();
+        notification.contentView = contentView;
         send(notification);
     }
-
     /**
      * 带进度条的通知栏
+     *
      * @param ticker
      * @param title
      * @param content
@@ -232,7 +257,7 @@ public class NotificationUtils {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i=0;i<=100;i+=10) {
+                for (int i = 0; i <= 100; i += 10) {
                     builder.setProgress(100, i, false);
                     send(builder.build());
                     try {
@@ -258,33 +283,33 @@ public class NotificationUtils {
 
     /**
      * 获取通知栏颜色
+     *
      * @param context
      * @return
      */
     public static int getNotificationColor(Context context) {
-        NotificationCompat.Builder builder=new NotificationCompat.Builder(context);
-        Notification notification=builder.build();
-        int layoutId=notification.contentView.getLayoutId();
-        ViewGroup viewGroup= (ViewGroup) LayoutInflater.from(context).inflate(layoutId, null, false);
-        if (viewGroup.findViewById(android.R.id.title)!=null) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        Notification notification = builder.build();
+        int layoutId = notification.contentView.getLayoutId();
+        ViewGroup viewGroup = (ViewGroup) LayoutInflater.from(context).inflate(layoutId, null, false);
+        if (viewGroup.findViewById(android.R.id.title) != null) {
             return ((TextView) viewGroup.findViewById(android.R.id.title)).getCurrentTextColor();
         }
         return findColor(viewGroup);
     }
 
     private static int findColor(ViewGroup viewGroupSource) {
-        int color=Color.TRANSPARENT;
-        LinkedList<ViewGroup> viewGroups=new LinkedList<>();
+        int color = Color.TRANSPARENT;
+        LinkedList<ViewGroup> viewGroups = new LinkedList<>();
         viewGroups.add(viewGroupSource);
-        while (viewGroups.size()>0) {
-            ViewGroup viewGroup1=viewGroups.getFirst();
+        while (viewGroups.size() > 0) {
+            ViewGroup viewGroup1 = viewGroups.getFirst();
             for (int i = 0; i < viewGroup1.getChildCount(); i++) {
                 if (viewGroup1.getChildAt(i) instanceof ViewGroup) {
                     viewGroups.add((ViewGroup) viewGroup1.getChildAt(i));
-                }
-                else if (viewGroup1.getChildAt(i) instanceof TextView) {
-                    if (((TextView) viewGroup1.getChildAt(i)).getCurrentTextColor()!=-1) {
-                        color=((TextView) viewGroup1.getChildAt(i)).getCurrentTextColor();
+                } else if (viewGroup1.getChildAt(i) instanceof TextView) {
+                    if (((TextView) viewGroup1.getChildAt(i)).getCurrentTextColor() != -1) {
+                        color = ((TextView) viewGroup1.getChildAt(i)).getCurrentTextColor();
                     }
                 }
             }
@@ -294,13 +319,13 @@ public class NotificationUtils {
     }
 
     private static boolean isSimilarColor(int baseColor, int color) {
-        int simpleBaseColor=baseColor|0xff000000;
-        int simpleColor=color|0xff000000;
-        int baseRed=Color.red(simpleBaseColor)-Color.red(simpleColor);
-        int baseGreen=Color.green(simpleBaseColor)-Color.green(simpleColor);
-        int baseBlue=Color.blue(simpleBaseColor)-Color.blue(simpleColor);
-        double value=Math.sqrt(baseRed*baseRed+baseGreen*baseGreen+baseBlue*baseBlue);
-        if (value<180.0) {
+        int simpleBaseColor = baseColor | 0xff000000;
+        int simpleColor = color | 0xff000000;
+        int baseRed = Color.red(simpleBaseColor) - Color.red(simpleColor);
+        int baseGreen = Color.green(simpleBaseColor) - Color.green(simpleColor);
+        int baseBlue = Color.blue(simpleBaseColor) - Color.blue(simpleColor);
+        double value = Math.sqrt(baseRed * baseRed + baseGreen * baseGreen + baseBlue * baseBlue);
+        if (value < 180.0) {
             return true;
         }
         return false;

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="64dp"
+              android:background="@android:color/transparent"
+              android:orientation="horizontal"
+    >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/share_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_share_facebook"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/share_facebook"
+            android:layout_margin="4dp"
+            android:layout_toRightOf="@+id/share_facebook">
+
+            <TextView
+                android:id="@+id/music_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="丑八怪"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/music_title"
+                android:text="薛之谦"
+                android:textSize="12sp"
+
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/bt_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_play_arrow_24dp"
+            android:layout_centerHorizontal="true"
+            />
+        <ImageButton
+            android:layout_toRightOf="@+id/bt_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_skip_next_42dp"
+            />
+
+        <ImageButton
+            android:id="@+id/share_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_skip_previous_42dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/bt_play"
+            android:layout_toStartOf="@+id/bt_play"/>
+    </RelativeLayout>
+
+</LinearLayout>
